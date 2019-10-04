@@ -50,15 +50,17 @@ public class JapCross {
         for (int i = 0; i < width; ++i) {
 
             for (int j = 0; j < height; ++j) {
+                graphics.setColor(matrix.get(i).get(j) > 0 ? Color.WHITE : Color.RED);
 
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+                graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 //                graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 //                graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 //                graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING , RenderingHints.VALUE_COLOR_RENDER_SPEED);
                 graphics.setRenderingHint(RenderingHints.KEY_DITHERING  , RenderingHints.VALUE_DITHER_ENABLE);
 //                graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION  , RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
 
-                graphics.setColor(matrix.get(i).get(j) > 0 ? Color.WHITE : Color.RED);
+
                 graphics.fillRect(i * a, j * a, a, a);
 
                 graphics.setColor(Color.BLACK);
@@ -73,7 +75,7 @@ public class JapCross {
 
     public static void main(String[] args) throws IOException {
         JapCross japCross = new JapCross();
-        BufferedImage image = japCross.getImage(JapCross.class.getResource("/me.jpg"));
+        BufferedImage image = japCross.getImage(JapCross.class.getResource("/flover.jpg"));
 
         BufferedImage targetImage = new BufferedImage(image.getHeight(), image.getWidth(), image.getType());
 //        AffineTransform transform = new AffineTransform();
