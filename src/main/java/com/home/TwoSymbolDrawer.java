@@ -3,7 +3,7 @@ package com.home;
 public class TwoSymbolDrawer implements Drawer{
     @Override
     public int getColor(float brightness) {
-        return brightness > 0.68f ? 1 : 0;
+        return brightness > 0.6f ? 1 : 0;
     }
 
     @Override

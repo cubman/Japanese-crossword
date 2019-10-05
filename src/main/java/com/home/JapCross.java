@@ -2,8 +2,6 @@ package com.home;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class JapCross {
 
@@ -39,25 +35,26 @@ public class JapCross {
         return drawer.getColor(br.get() / allPixels);
     }
 
-    private void drawMatrix(int width, int height, List<List<Integer>> matrix) throws IOException {
+    private BufferedImage drawMatrix(List<List<Integer>> matrix) throws IOException {
         BufferedImage bufferedImage = new BufferedImage(600, 820, BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D graphics = (Graphics2D)bufferedImage.getGraphics();
+        Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
 
-
-        graphics.setColor(Color.WHITE);
-        graphics.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
-        int a = 5;
-        for (int i = 0; i < width; ++i) {
-
-            for (int j = 0; j < height; ++j) {
-                graphics.setColor(matrix.get(i).get(j) > 0 ? Color.WHITE : Color.RED);
-
-                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-                graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 //                graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 //                graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 //                graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING , RenderingHints.VALUE_COLOR_RENDER_SPEED);
-                graphics.setRenderingHint(RenderingHints.KEY_DITHERING  , RenderingHints.VALUE_DITHER_ENABLE);
+        graphics.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
+        int a = 4;
+        for (int i = 0; i < matrix.size(); ++i) {
+
+            for (int j = 0; j < matrix.get(i).size(); ++j) {
+                graphics.setColor(matrix.get(i).get(j) > 0 ? Color.WHITE : Color.RED);
+
+
 //                graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION  , RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
 
 
@@ -71,11 +68,12 @@ public class JapCross {
         graphics.dispose();
 
         ImageIO.write(bufferedImage, "jpg", new File("matrix.jpg"));
+        return bufferedImage;
     }
 
     public static void main(String[] args) throws IOException {
         JapCross japCross = new JapCross();
-        BufferedImage image = japCross.getImage(JapCross.class.getResource("/flover.jpg"));
+        BufferedImage image = japCross.getImage(JapCross.class.getResource("/cat.jpg"));
 
         BufferedImage targetImage = new BufferedImage(image.getHeight(), image.getWidth(), image.getType());
 //        AffineTransform transform = new AffineTransform();
@@ -86,8 +84,12 @@ public class JapCross {
 //        op.filter(image, targetImage);
 //        image = targetImage;
 
-        int height = 100;
-        int width = 90;
+
+    }
+
+    public BufferedImage drawJapCrossword(BufferedImage image) throws IOException {
+        int height = 110;
+        int width = 140;
 
         float squareWidth = image.getWidth() / (float) width;
         float squareHeight = image.getHeight() / (float) height;
@@ -112,7 +114,7 @@ public class JapCross {
                 float subHeight = Math.min(squareHeight, image.getHeight() - y);
                 BufferedImage subImage = image.getSubimage((int) x, (int) y, (int) subWidth, (int) subHeight);
 
-                int color = japCross.getColor(subImage, drawer);
+                int color = getColor(subImage, drawer);
 
                 matrix.get(i).add(color);
                 matrixDraw.get(i).add(drawer.colorToSymbol(color));
@@ -124,6 +126,33 @@ public class JapCross {
             System.out.println();
         });
 
-        japCross.drawMatrix(width, height, matrix);
+        return drawMatrix(matrix);
+    }
+
+    private List<List<RectangleValue>> countVerticalNumbers(List<List<Integer>> picture) {
+        List<List<RectangleValue>> verticalCounter = new ArrayList<>();
+
+        for (int i = 0; i < picture.size(); ++i) {
+            int startColor = picture.get(i).get(0);
+            int count = 1;
+            verticalCounter.add(new ArrayList<>());
+
+            for (int j = 1; j < picture.get(i).size(); ++j) {
+                Integer newColor = picture.get(i).get(j);
+                if (startColor == newColor) {
+                    ++count;
+                } else {
+                    verticalCounter.get(i).add(new RectangleValue(startColor, count));
+                    startColor = newColor;
+                    count = 1;
+                }
+            }
+
+            if (count > 1) {
+                verticalCounter.get(i).add(new RectangleValue(startColor, count));
+            }
+        }
+
+        return verticalCounter;
     }
 }
