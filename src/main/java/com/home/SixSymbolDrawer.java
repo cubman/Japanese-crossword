@@ -1,5 +1,8 @@
 package com.home;
 
+import java.awt.*;
+import java.util.List;
+
 public class SixSymbolDrawer implements Drawer {
     @Override
     public int getColor(float brightness) {
@@ -20,6 +23,20 @@ public class SixSymbolDrawer implements Drawer {
     }
 
     @Override
+    public Color getColor(int color) {
+        switch (color) {
+            case 0 : return Color.GRAY;
+            case 1 : return Color.PINK;
+            case 2 : return Color.WHITE;
+            case 3 : return Color.YELLOW;
+            case 4 : return Color.BLUE;
+            case 5 : return Color.RED;
+        }
+
+        throw new RuntimeException("Цвет не определен");
+    }
+
+    @Override
     public String colorToSymbol(int color) {
         switch (color) {
             case 0: return "◻";
@@ -31,5 +48,10 @@ public class SixSymbolDrawer implements Drawer {
             default:
                 throw new RuntimeException();
         }
+    }
+
+    @Override
+    public List<List<RectangleValue>> filterMatrix(List<List<RectangleValue>> splittedByColorMatrix) {
+        return splittedByColorMatrix;
     }
 }
