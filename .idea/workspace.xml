@@ -4,11 +4,7 @@
     <list default="true" id="c333aed5-3559-4a7e-9c19-d0bc69983d19" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/matrix.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/matrix.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/home/Drawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/home/Drawer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/home/JapCross.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/home/JapCross.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/home/SixSymbolDrawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/home/SixSymbolDrawer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/home/ThreeSymbolDrawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/home/ThreeSymbolDrawer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/home/TwoSymbolDrawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/home/TwoSymbolDrawer.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -23,8 +19,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/home/JapCross.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
-              <caret line="55" column="62" selection-start-line="55" selection-start-column="62" selection-end-line="55" selection-end-column="62" />
+            <state relative-caret-position="238">
+              <caret line="93" column="49" lean-forward="true" selection-start-line="93" selection-start-column="49" selection-end-line="93" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -145,8 +141,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -242,7 +238,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1570905932232" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1570906037518" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
@@ -329,12 +325,20 @@
       <option name="presentableId" value="Default" />
       <updated>1566718322454</updated>
     </task>
+    <task id="LOCAL-00001" summary="добавлен полноценный генратор кроссворда">
+      <created>1570906065360</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1570906065360</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19822006" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20145631" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -362,6 +366,10 @@
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="добавлен полноценный генратор кроссворда" />
+    <option name="LAST_COMMIT_MESSAGE" value="добавлен полноценный генратор кроссворда" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -580,15 +588,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/flover.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/elephant.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/gepard.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/merlin.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -601,6 +600,15 @@
     <entry file="file://$PROJECT_DIR$/src/main/resources/zebra2.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/gepard.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/flover.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/elephant.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/home/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -610,8 +618,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/home/JapCross.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="55" column="62" selection-start-line="55" selection-start-column="62" selection-end-line="55" selection-end-column="62" />
+        <state relative-caret-position="238">
+          <caret line="93" column="49" lean-forward="true" selection-start-line="93" selection-start-column="49" selection-end-line="93" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

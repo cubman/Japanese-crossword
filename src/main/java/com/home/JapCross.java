@@ -55,7 +55,7 @@ public class JapCross {
         graphics.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
         graphics.setFont(new Font("TimesRoman", Font.PLAIN, 18));
 
-        int a = 26;
+        int a = 28;
         int moveX = 0;
         int moveY = 0;
 
@@ -90,8 +90,8 @@ public class JapCross {
 
         for (int i = 0; i < matrix.size(); ++i) {
             for (int j = 0; j < matrix.get(i).size(); ++j) {
-//                graphics.setColor(drawer.getColor(matrix.get(i).get(j)));
-                graphics.setColor(Color.WHITE);
+                graphics.setColor(drawer.getColor(matrix.get(i).get(j)));
+//                graphics.setColor(Color.WHITE);
 
                 graphics.fillRect(moveX + i * a, moveY + j * a, a, a);
 
@@ -219,7 +219,7 @@ public class JapCross {
                 }
             }
 
-            if (count > 1) {
+            if (count > 0) {
                 verticalCounter.get(i).add(new RectangleValue(startColor, count));
             }
         }
