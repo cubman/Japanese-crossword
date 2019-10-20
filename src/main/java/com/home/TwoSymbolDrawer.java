@@ -5,9 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TwoSymbolDrawer implements Drawer{
+    private float mainBrightness;
+
+    public TwoSymbolDrawer(Integer brightness) {
+        this.mainBrightness = brightness / 100f;
+    }
     @Override
     public int getColor(float brightness) {
-        return brightness > 0.94f ? 1 : 0;
+        return brightness < 0.5f - mainBrightness || brightness > 0.5f + mainBrightness ? 1 : 0;
     }
 
     @Override

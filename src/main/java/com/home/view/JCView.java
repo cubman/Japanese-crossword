@@ -1,10 +1,11 @@
 package com.home.view;
 
 import com.home.JapCross;
-import javafx.embed.swing.SwingFXUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,21 +15,33 @@ import java.io.IOException;
 
 public class JCView extends JFrame {
     private JButton loadPhoto;
-    private JSpinner recSize;
+    private JSpinner brightness;
     private JPanel mainPane;
-    private JSpinner whiteToBlack;
+    private JSpinner rowAm;
     private JPanel originPhoto;
     private JPanel japPhoto;
+    private JSpinner amWidth;
+    private JSpinner amHeight;
+    private JPanel historamPhoto;
 
     private JapCross japCross;
+    private BufferedImage image;
 
     public JCView() {
         japCross = new JapCross();
 
         setContentPane(mainPane);
 
-        recSize.setValue(4);
-        whiteToBlack.setValue(50);
+        brightness.setValue(50);
+        rowAm.setValue(4);
+        amWidth.setValue(70);
+        amHeight.setValue(80);
+
+        brightness.addChangeListener(new EventChangeSpinnerListener());
+        rowAm.addChangeListener(new EventChangeSpinnerListener());
+        amWidth.addChangeListener(new EventChangeSpinnerListener());
+        amHeight.addChangeListener(new EventChangeSpinnerListener());
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         loadPhoto.addActionListener(new ActionListener() {
@@ -40,15 +53,22 @@ public class JCView extends JFrame {
                 if (ret == JFileChooser.APPROVE_OPTION) {
                     File file = jFileChooser.getSelectedFile();
                     try {
-                        BufferedImage image = ImageIO.read(file);
+                        image = ImageIO.read(file);
 
 
 //                        BufferedImage bufferedImage = toBufferedImage(image);
-                        BufferedImage image1 = japCross.drawJapCrossword(image);
-                        japPhoto.getGraphics().drawImage(image1, 0, 0, Color.BLACK, null);
+                        BufferedImage image1 = japCross.drawJapCrossword(image, (Integer) brightness.getValue(), (Integer) rowAm.getValue(), (Integer) amWidth.getValue(), (Integer) amHeight.getValue());
 
-                        Graphics photoGraphics = originPhoto.getGraphics();
-                        photoGraphics.drawImage(image, 0, 0, Color.BLACK, null);
+                        ((PaintPanel)japPhoto).updateImage(image1);
+                        japPhoto.repaint();
+
+//                        japPhoto.getGraphics().drawImage(image1, 0, 0, Color.BLACK, null);
+                        ((PaintPanel)originPhoto).updateImage(image);
+                        originPhoto.repaint();
+
+                        BufferedImage buildHistorgram = japCross.buildHistorgram(image);
+                        ((PaintPanel)historamPhoto).updateImage(buildHistorgram);
+                        historamPhoto.repaint();
 //                        originPhoto.repaint();
 //                        originPhoto.validate();
                     } catch (IOException e1) {
@@ -58,24 +78,29 @@ public class JCView extends JFrame {
                 }
             }
         });
+
     }
 
-    public static BufferedImage toBufferedImage(Image img)
-    {
-        if (img instanceof BufferedImage)
-        {
-            return (BufferedImage) img;
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        originPhoto = new PaintPanel();
+        japPhoto = new PaintPanel();
+        historamPhoto = new PaintPanel();
+    }
+
+    private class EventChangeSpinnerListener implements ChangeListener {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            BufferedImage image1 = null;
+            try {
+                image1 = japCross.drawJapCrossword(image, (Integer) brightness.getValue(), (Integer) rowAm.getValue(), (Integer) amWidth.getValue(), (Integer) amHeight.getValue());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
+            ((PaintPanel)japPhoto).updateImage(image1);
+            japPhoto.repaint();
         }
-
-        // Create a buffered image with transparency
-        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-        // Draw the image on to the buffered image
-        Graphics2D bGr = bimage.createGraphics();
-        bGr.drawImage(img, 0, 0, null);
-        bGr.dispose();
-
-        // Return the buffered image
-        return bimage;
     }
 }
