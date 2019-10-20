@@ -12,7 +12,7 @@ public class TwoSymbolDrawer implements Drawer{
     }
     @Override
     public int getColor(float brightness) {
-        return brightness < 0.5f - mainBrightness || brightness > 0.5f + mainBrightness ? 1 : 0;
+        return Math.abs(mainBrightness - brightness) < 0.2f ? 1 : 0;
     }
 
     @Override

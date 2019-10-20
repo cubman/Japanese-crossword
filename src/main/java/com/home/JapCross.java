@@ -8,10 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 public class JapCross {
 
@@ -48,21 +45,19 @@ public class JapCross {
 
     private BufferedImage drawMatrix(Drawer drawer, List<List<Integer>> matrix, Integer recWidth, List<List<RectangleValue>> horizontal,
                                      List<List<RectangleValue>> vertical) throws IOException {
-        BufferedImage bufferedImage = new BufferedImage(horizontal.size() * recWidth,
-                (matrix.get(0).size() + vertical.size()) * recWidth, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage bufferedImage = new BufferedImage((horizontal.size() + 1) * recWidth,
+                (matrix.get(0).size() + horizontal.get(0).size() + 1) * recWidth, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
 
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-//                graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-//                graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING , RenderingHints.VALUE_COLOR_RENDER_SPEED);
         graphics.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
 
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 
-        graphics.setFont(new Font("TimesRoman", Font.PLAIN, recWidth / 2));
+        graphics.setFont(new Font("TimesRoman", Font.PLAIN, (int)(recWidth * 0.75)));
 
         int moveX = 0;
         int moveY = 0;
@@ -95,11 +90,9 @@ public class JapCross {
         moveY = recWidth * horizontal.get(0).size();
 
 
-
         for (int i = 0; i < matrix.size(); ++i) {
             for (int j = 0; j < matrix.get(i).size(); ++j) {
                 graphics.setColor(drawer.getColor(matrix.get(i).get(j)));
-//                graphics.setColor(Color.WHITE);
 
                 graphics.fillRect(moveX + i * recWidth, moveY + j * recWidth, recWidth, recWidth);
 
@@ -113,7 +106,7 @@ public class JapCross {
         drawLine(graphics, new Line2D.Float(moveX, 0, moveX, moveY + matrix.get(0).size() * recWidth - lineWidth), lineWidth);
 
         int split = 5;
-        for (int i = 0; i < matrix.size()  / split; ++i) {
+        for (int i = 0; i < matrix.size() / split; ++i) {
             for (int j = 0; j < matrix.get(i).size() / split; ++j) {
                 drawLine(graphics, new Line2D.Float(0, moveY + j * split * recWidth, moveX + matrix.size() * recWidth - lineWidth, moveY + j * split * recWidth), lineWidth);
                 drawLine(graphics, new Line2D.Float(moveX + i * split * recWidth, 0, moveX + i * split * recWidth, moveY + matrix.get(i).size() * recWidth - lineWidth), lineWidth);
@@ -137,15 +130,6 @@ public class JapCross {
     public static void main(String[] args) throws IOException {
         JapCross japCross = new JapCross();
         BufferedImage image = japCross.getImage(JapCross.class.getResource("/merlin.jpg"));
-
-        BufferedImage targetImage = new BufferedImage(image.getHeight(), image.getWidth(), image.getType());
-//        AffineTransform transform = new AffineTransform();
-//        transform.setToScale(1, -1);
-//        transform.translate(-(image.getWidth() - image.getHeight()) / 2, -(image.getWidth() + image.getHeight()) / 2);
-//        transform.rotate(Math.toRadians(270), image.getWidth() / 2, image.getHeight() / 2);
-//        AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
-//        op.filter(image, targetImage);
-//        image = targetImage;
 
         japCross.drawJapCrossword(image, 20, 6, 1000, 1000);
     }
@@ -184,11 +168,6 @@ public class JapCross {
             }
         }
 
-//        matrixDraw.forEach(strings -> {
-//            strings.forEach(System.out::print);
-//            System.out.println();
-//        });
-
         List<List<RectangleValue>> horizontalNumbers = countVerticalNumbers(matrix, drawer);
 
         List<List<RectangleValue>> verticalNumbers = countVerticalNumbers(transpose(matrix), drawer);
@@ -196,7 +175,6 @@ public class JapCross {
         addStartEmptyMatrix(horizontalNumbers, verticalNumbers.get(0).size());
 
         return drawMatrix(drawer, matrix, recWidth, horizontalNumbers, transpose(verticalNumbers));
-
     }
 
     public BufferedImage buildHistorgram(BufferedImage image) {
@@ -205,21 +183,30 @@ public class JapCross {
         List<Long> result = new ArrayList<>(100);
 
         for (int i = 0; i < 100; ++i) {
-            int finalI = i;
-            result.add(hsbList.stream().filter(aFloat -> aFloat >= finalI && aFloat < finalI + 1).count());
+            float finalI = i / 100f;
+            result.add(hsbList.stream().filter(aFloat -> aFloat >= finalI && aFloat < finalI + 0.01f).count());
         }
 
-        int widthRec = 2;
+        int widthRec = 5;
+        int picMax = 200;
+
         int max = result.stream().max(Comparator.comparingLong(o -> o)).get().intValue();
 
-        BufferedImage bufferedImage = new BufferedImage(widthRec * result.size(), max, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage bufferedImage = new BufferedImage(widthRec * result.size(), picMax, BufferedImage.TYPE_3BYTE_BGR);
         Graphics graphics = bufferedImage.getGraphics();
 
         for (int i = 0; i < result.size(); ++i) {
-            graphics.drawRect(i * widthRec, 0, widthRec, result.get(i).intValue());
+            int height = result.get(i).intValue() * picMax / max;
+            graphics.setColor(getRandColor());
+            graphics.fillRect(i * widthRec, picMax - height, widthRec, height);
         }
 
         return bufferedImage;
+    }
+
+    private Color getRandColor() {
+        Random random = new Random();
+        return new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
     }
 
     private void addStartEmptyMatrix(List<List<RectangleValue>> horizontalNumbers, int size) {

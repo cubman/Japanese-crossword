@@ -6,7 +6,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -59,15 +58,15 @@ public class JCView extends JFrame {
 //                        BufferedImage bufferedImage = toBufferedImage(image);
                         BufferedImage image1 = japCross.drawJapCrossword(image, (Integer) brightness.getValue(), (Integer) rowAm.getValue(), (Integer) amWidth.getValue(), (Integer) amHeight.getValue());
 
-                        ((PaintPanel)japPhoto).updateImage(image1);
+                        ((PaintPanel) japPhoto).updateImage(image1);
                         japPhoto.repaint();
 
 //                        japPhoto.getGraphics().drawImage(image1, 0, 0, Color.BLACK, null);
-                        ((PaintPanel)originPhoto).updateImage(image);
+                        ((PaintPanel) originPhoto).updateImage(image);
                         originPhoto.repaint();
 
                         BufferedImage buildHistorgram = japCross.buildHistorgram(image);
-                        ((PaintPanel)historamPhoto).updateImage(buildHistorgram);
+                        ((PaintPanel) historamPhoto).updateImage(buildHistorgram);
                         historamPhoto.repaint();
 //                        originPhoto.repaint();
 //                        originPhoto.validate();
@@ -78,14 +77,12 @@ public class JCView extends JFrame {
                 }
             }
         });
-
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
-        originPhoto = new PaintPanel();
-        japPhoto = new PaintPanel();
-        historamPhoto = new PaintPanel();
+        originPhoto = new PaintPanel(true);
+        japPhoto = new PaintPanel(false);
+        historamPhoto = new PaintPanel(true);
     }
 
     private class EventChangeSpinnerListener implements ChangeListener {
@@ -99,7 +96,7 @@ public class JCView extends JFrame {
                 e1.printStackTrace();
             }
 
-            ((PaintPanel)japPhoto).updateImage(image1);
+            ((PaintPanel) japPhoto).updateImage(image1);
             japPhoto.repaint();
         }
     }
